@@ -21,7 +21,13 @@ struct llhttp_settings_s {
   /* Possible return values 0, -1, `HPE_PAUSED` */
   llhttp_cb      on_message_begin;
 
-  /* Possible return values 0, -1, HPE_USER */
+  /* Possible return values 0, -1, HPE_USER
+   * Be mindfull that there is no guarantee that the status will be fully parsed
+   * and available when on_status is invoked.
+   * To read a fully parsed status code and avoid a race condition, you need
+   * to register an on_status_complete callback and read the status code from there. 
+   * on_headers_complete or on_message_complete can be used as well.
+   */
   llhttp_data_cb on_url;
   llhttp_data_cb on_status;
   llhttp_data_cb on_header_field;
